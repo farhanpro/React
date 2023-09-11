@@ -1,4 +1,5 @@
 import './App.css'; 
+import ShoppingApp from './Components/Assingment2';
 // import EventBind from './Components/EventBind';
 // import FunctionClick from './Components/FunctionClick';
 import ClassClick from './Components/ClassClick';
@@ -12,8 +13,10 @@ function App() {
       {/* <FunctionClick /> */}
       {/* <ClassClick/> */}
       {/* <EventBind/> */}
-      {/* <ParentComponent/> */}
-      <UserGreeting/>
+      <ParentComponent/>
+      {/* <UserGreeting/> */}
+      {/* <ShoppingApp/> */}
+
       
 
     </div>

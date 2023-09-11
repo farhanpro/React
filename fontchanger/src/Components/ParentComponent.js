@@ -6,19 +6,26 @@ import ClildComponent from './ClildComponent'
       super(props)
     
       this.state = {
-         ParentName :'Parent'
+         EmployeeName :'Clark',
+         EmployeePhoto : 'https://shorturl.at/nrGNR',
+         EmployeeId : 0,
+         EmployeeRole : 'Software Engineer',
+         EmployeeStatus : true,
+         EmployeeEmail : 'shaikhfarhan549@gmail.com'
       }
-      this.greetParent = this.greetParent.bind(this)
+  
     }
-    greetParent(child){
-        alert(`Hello ${this.state.ParentName} from ${child}`)
-    }
+    handleCallback = (childData) =>{
+      this.setState({EmployeeStatus: childData});
+      console.log('PArent',this.state);
+  }
+   
   render() {
+    const data = this.state;
     return (
-      <div>
-        ParentComponent 
-        <ClildComponent greetHandler ={this.greetParent}/>
-      </div>
+        <div> 
+          <ClildComponent dataParentToChild = {data} parentCallback = {this.handleCallback}/>
+        </div>
     )
   }
 }
