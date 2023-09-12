@@ -9,12 +9,11 @@ import Counter from './components/Counter';
 function App() {
   return (
     <div className="App">
-      <Counter    />
+      <Counter/>
         {/* <Welcome/> <Greet/> */}
        {/* <Hello name = "Bruce" heroName="Batman" htmlcontent="This is Childern props"/>
        <Hello name = "Clark" heroName="Superman">
         <button> Hello </button> </Hello> <Hello name = "Diana" heroName="WonderWoman"/> */}
-
     </div>
   );
 }

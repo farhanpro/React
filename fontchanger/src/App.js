@@ -6,6 +6,9 @@ import ClassClick from './Components/ClassClick';
 import EventBind from './Components/EventBind';
 import ParentComponent from './Components/ParentComponent';
 import UserGreeting from './Components/UserGreeting';
+import Counter from './Components/Counter';
+// import ShoppingApp from './Components/Assingment2';
+
 function App() {
   return (
     <div className='App'>

@@ -3,8 +3,7 @@ import "../Css/Child.css"
 
 export class ClildComponent extends Component {
   constructor(props) {
-    super(props)
-  
+    super(props)  
     this.state = {
        data : this.props.dataParentToChild
     }
@@ -12,14 +11,14 @@ export class ClildComponent extends Component {
   
   sendDataToParent = () =>{
     let modifieddata = this.state.data;
-    modifieddata.EmployeeStatus = false;
+    modifieddata.EmployeeStatus = !modifieddata.EmployeeStatus ;
     
     this.setState({
       data: modifieddata
     });
     
     console.log("Child",this.state);
-    this.props.parentCallback(false);
+    this.props.parentCallback( modifieddata.EmployeeStatus );
   }
 
   render() {

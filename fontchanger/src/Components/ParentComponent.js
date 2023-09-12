@@ -17,7 +17,7 @@ import ClildComponent from './ClildComponent'
     }
     handleCallback = (childData) =>{
       this.setState({EmployeeStatus: childData});
-      console.log('PArent',this.state);
+      console.log('Parent',this.state);
   }
    
   render() {
