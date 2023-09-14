@@ -1,0 +1,51 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "employeeName": "Farhan",
+      "employeeContact": "7798286678",
+      "employeeEmail": "shaikhfarhan549@gmail.com",
+      "employeeStatus": "Active"
+    },
+    {
+      "employeeName": "",
+      "employeeContact": "",
+      "employeeEmail": "",
+      "employeeStatus": "",
+      "shouldShowDiv": false,
+      "id": "spl4icB"
+    },
+    {
+      "employeeName": "farhan",
+      "employeeContact": "9145342988",
+      "employeeEmail": "shaikhfarhan549@gmail.com",
+      "employeeStatus": "Active",
+      "shouldShowDiv": false,
+      "id": "On_dKdg"
+    },
+    {
+      "employeeName": "farhan",
+      "employeeContact": "shaikh",
+      "employeeEmail": "ksjsn",
+      "employeeStatus": "kjskkjns",
+      "shouldShowDiv": false,
+      "id": "I76Q8FW"
+    },
+    {
+      "employeeName": "praving",
+      "employeeContact": "0593390409",
+      "employeeEmail": "pravin@gmail.com",
+      "employeeStatus": "Active",
+      "shouldShowDiv": false,
+      "id": "tBvcSUu"
+    },
+    {
+      "employeeName": "qwertyu",
+      "employeeContact": "1234567890",
+      "employeeEmail": "shaikhfarhan5492@gmail.com",
+      "employeeStatus": "12345",
+      "shouldShowDiv": false,
+      "id": "StoImpR"
+    }
+  ]
+}
