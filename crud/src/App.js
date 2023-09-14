@@ -5,12 +5,15 @@ class App extends Component {
   state = {
     posts: [],
     newPost: {
+      id:0,
       employeeName: '',
       employeeContact: '',
       employeeEmail: '',
       employeeStatus: '',
       shouldShowDiv: false,
+      shouldEditDiv: false
     },
+    editingItemId : null
   };
 
   componentDidMount() {
@@ -66,6 +69,21 @@ class App extends Component {
       })
       .catch((error) => console.error('Error adding post:', error));
   };
+ 
+  deleteItem = (id) => {
+    fetch(`http://localhost:3001/posts/${id}`, {
+      method: 'DELETE',
+    })
+      .then(() => {
+        this.fetchData();
+      })
+      .catch((error) => console.error('Error deleting item:', error));
+  };
+  
+  updateItem = (id)=>{
+
+  }
+ 
 
   render() {
     const { posts, newPost } = this.state;
@@ -73,6 +91,7 @@ class App extends Component {
     return (
       <div>
           <h2>Employee Manaement System</h2>
+          <button class="btn btn-primary" onClick={this.handleClick}>Add</button>
           <table  class="table">
             
             <thead>
@@ -88,31 +107,45 @@ class App extends Component {
             {/* To Show data here  */}
             {posts.map((post) => (
               <tbody>
-                <tr key={post.id}>
-              
+                <tr key={post.id} >
                <td > <p>{post.employeeName}</p></td>
                <td ><p>{post.employeeContact}</p></td>
                <td ><p>{post.employeeEmail}</p></td>
                <td ><p>{post.employeeStatus}</p></td>
-               <td ><button class="btn btn-danger">Delete</button> <button class="btn btn-secondary">Edit</button> <button class="btn btn-primary" onClick={this.handleClick}>Add</button></td>
+               <td >
+                <button  class="btn btn-danger" onClick={()=>{this.deleteItem(post.id)}} >Delete</button> 
+                <button onClick={()=>{this.editEmployee(post.id)}} class="btn btn-secondary">Edit</button> 
+                <button class="btn btn-primary" onClick={()=>{ this.handleClick()}}>Add</button></td>
               </tr>
+             
               </tbody>
+               
             ))}
+             {this.state.shouldShowDiv && 
+             
+             <tr>
+         <td >Employee Name : <input type="text"name="employeeName"placeholder="Employee Name"value={newPost.employeeName} onChange={this.handleInputChange}/></td>
+         <td >employeeContact : <input type="text"name="employeeContact"placeholder="employeeContact"value={newPost.employeeContact}onChange={this.handleInputChange}/></td>
+         <td >employeeEmail : <input type="text" name="employeeEmail" placeholder="employeeEmail" value={newPost.employeeEmail} onChange={this.handleInputChange}/></td>
+         <td >employeeStatus : <input type="text" name="employeeStatus" placeholder="employeeStatus" value={newPost.employeeStatus} onChange={this.handleInputChange}/></td>
+         <td >
+          <button class="btn btn-primary" onClick={()=>{this.addEmployee(); this.handleClick();}} > Add</button> 
+          <button class="btn btn-danger" onClick={()=>{ this.handleClick();}} > cancel</button></td>
+         </tr>
+        
+         }
+         {this.state.shouldEditDiv && <tr  key={posts.id}>
+
+          <td >Employee Name : <input type="text"name="employeeName"placeholder="Employee Name"value={newPost.employeeName} onChange={this.handleInputChange}/></td>
+         <td >employeeContact : <input type="text"name="employeeContact"placeholder="employeeContact"value={newPost.employeeContact}onChange={this.handleInputChange}/></td>
+         <td >employeeEmail : <input type="text" name="employeeEmail" placeholder="employeeEmail" value={newPost.employeeEmail} onChange={this.handleInputChange}/></td>
+         <td >employeeStatus : <input type="text" name="employeeStatus" placeholder="employeeStatus" value={newPost.employeeStatus} onChange={this.handleInputChange}/></td>
+          </tr>
+        
+        }
             </table>
 
-            {this.state.shouldShowDiv && 
-              <table class="table">
-                <thead>
-                  <tr>
-              <th scope="col" ><input type="text"name="employeeName"placeholder="Employee Name"value={newPost.employeeName} onChange={this.handleInputChange}/></th>
-              <th scope="col" ><input type="text"name="employeeContact"placeholder="employeeContact"value={newPost.employeeContact}onChange={this.handleInputChange}/></th>
-              <th scope="col" ><input type="text" name="employeeEmail" placeholder="employeeEmail" value={newPost.employeeEmail} onChange={this.handleInputChange}/></th>
-              <th scope="col" ><input type="text" name="employeeStatus" placeholder="employeeStatus" value={newPost.employeeStatus} onChange={this.handleInputChange}/></th>
-              <th scope="col" ><button onClick={()=>{this.addEmployee(); this.handleClick();}} class="btn btn-primary"> Add</button></th>
-              </tr>
-              </thead>
-              </table>
-              }
+           
         </div>
     );
   }
