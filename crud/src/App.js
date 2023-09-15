@@ -1,9 +1,11 @@
+
 import React, { Component } from 'react';
 
 class App extends Component {
 
   state = {
     posts: [],
+    tempPosts: [],
     newPost: {
       id:0,
       employeeName: '',
@@ -39,12 +41,19 @@ class App extends Component {
       },
     }));
   };
+  
   handleClick = () => {
     this.setState((prevState) => ({
       shouldShowDiv: !prevState.shouldShowDiv,
     }));
   };
 
+  handleEditClick = () => {
+    this.setState((prevState) => ({
+      shouldEditDiv: !prevState.shouldEditDiv,
+    }));
+   this.fetchData();
+  };
   addEmployee = () => {
     
     fetch('http://localhost:3001/posts', {
@@ -70,6 +79,52 @@ class App extends Component {
       .catch((error) => console.error('Error adding post:', error));
   };
  
+  updateEmployee = (id) => {
+    this.setState({
+      
+      shouldEditDiv:true
+    });
+    fetch(`http://localhost:3001/posts/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        // Handle the data for the single employee here
+      this.setState({ newPost: data });
+        console.log(data);
+
+      })
+      .catch((error) => console.error('Error fetching employee:', error));
+  };
+  
+  editEmployee = (data) => {
+    fetch(`http://localhost:3001/posts/${data.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Item updated successfully:', data);
+        this.setState({
+          newPost: {
+            employeeName: '',
+            employeeContact: '',
+            employeeEmail: '',
+            employeeStatus: '',
+            shouldShowDiv:false
+            
+          },
+        });
+        // You can add code here to handle the response as needed
+      })
+      .catch((error) => console.error('Error updating item:', error));
+  };
+  
+
+
+  
+
   deleteItem = (id) => {
     fetch(`http://localhost:3001/posts/${id}`, {
       method: 'DELETE',
@@ -80,9 +135,7 @@ class App extends Component {
       .catch((error) => console.error('Error deleting item:', error));
   };
   
-  updateItem = (id)=>{
-
-  }
+  
  
 
   render() {
@@ -114,41 +167,48 @@ class App extends Component {
                <td ><p>{post.employeeStatus}</p></td>
                <td >
                 <button  class="btn btn-danger" onClick={()=>{this.deleteItem(post.id)}} >Delete</button> 
-                <button onClick={()=>{this.editEmployee(post.id)}} class="btn btn-secondary">Edit</button> 
-                <button class="btn btn-primary" onClick={()=>{ this.handleClick()}}>Add</button></td>
+                <button class="btn btn-secondary" onClick={()=>{this.updateEmployee(post.id)}} >Edit</button> 
+                {/* <button class="btn btn-primary" onClick={()=>{ this.handleClick()}}>Add</button> */}</td>
               </tr>
              
               </tbody>
                
             ))}
-             {this.state.shouldShowDiv && 
+             {this.state.shouldShowDiv  && 
              
              <tr>
-         <td >Employee Name : <input type="text"name="employeeName"placeholder="Employee Name"value={newPost.employeeName} onChange={this.handleInputChange}/></td>
-         <td >employeeContact : <input type="text"name="employeeContact"placeholder="employeeContact"value={newPost.employeeContact}onChange={this.handleInputChange}/></td>
+         <td >Employee Name : <input type="text" name="employeeName" placeholder="Employee Name" value={newPost.employeeName} onChange={this.handleInputChange}/></td>
+         <td >employeeContact : <input type="text" name="employeeContact" placeholder="employeeContact" value={newPost.employeeContact}onChange={this.handleInputChange}/></td>
          <td >employeeEmail : <input type="text" name="employeeEmail" placeholder="employeeEmail" value={newPost.employeeEmail} onChange={this.handleInputChange}/></td>
          <td >employeeStatus : <input type="text" name="employeeStatus" placeholder="employeeStatus" value={newPost.employeeStatus} onChange={this.handleInputChange}/></td>
          <td >
           <button class="btn btn-primary" onClick={()=>{this.addEmployee(); this.handleClick();}} > Add</button> 
+          {/* <button class="btn btn-primary" onClick={()=>{this.editEmployee(newPost); this.handleClick();}} > edit</button>  */}
           <button class="btn btn-danger" onClick={()=>{ this.handleClick();}} > cancel</button></td>
          </tr>
         
          }
-         {this.state.shouldEditDiv && <tr  key={posts.id}>
-
-          <td >Employee Name : <input type="text"name="employeeName"placeholder="Employee Name"value={newPost.employeeName} onChange={this.handleInputChange}/></td>
-         <td >employeeContact : <input type="text"name="employeeContact"placeholder="employeeContact"value={newPost.employeeContact}onChange={this.handleInputChange}/></td>
+          {this.state.shouldEditDiv && 
+             
+             <tr>
+         <td >Employee Name : <input type="text" name="employeeName" placeholder="Employee Name" value={newPost.employeeName} onChange={this.handleInputChange}/></td>
+         <td >employeeContact : <input type="text" name="employeeContact" placeholder="employeeContact" value={newPost.employeeContact}onChange={this.handleInputChange}/></td>
          <td >employeeEmail : <input type="text" name="employeeEmail" placeholder="employeeEmail" value={newPost.employeeEmail} onChange={this.handleInputChange}/></td>
          <td >employeeStatus : <input type="text" name="employeeStatus" placeholder="employeeStatus" value={newPost.employeeStatus} onChange={this.handleInputChange}/></td>
-          </tr>
+         <td >
+         
+          <button class="btn btn-primary" onClick={()=>{this.editEmployee(newPost); this.handleEditClick();}} > Edit</button> 
+          <button class="btn btn-danger" onClick={()=>{ this.handleEditClick();}} > cancel</button></td>
+         </tr>
         
-        }
+         }
+        
             </table>
 
            
         </div>
     );
   }
-}
 
+}
 export default App;
