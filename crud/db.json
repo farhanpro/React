@@ -1,29 +1,11 @@
 {
   "posts": [
     {
-      "id": "bKxdXnp",
-      "employeeName": "pravin",
-      "employeeContact": "7798286678",
-      "employeeEmail": "farhan@sonoeerasoftware.com",
+      "id": 1,
+      "employeeName": "Hapij",
+      "employeeContact": "894828992",
+      "employeeEmail": "hapij@sonora.com",
       "employeeStatus": "Active",
-      "shouldShowDiv": false,
-      "shouldEditDiv": false
-    },
-    {
-      "id": "yfMCrSh",
-      "employeeName": "FArhan",
-      "employeeContact": "7798286678yy",
-      "employeeEmail": "shaikhfarhan5492@gmail.com",
-      "employeeStatus": "ACTIVE",
-      "shouldShowDiv": false,
-      "shouldEditDiv": false
-    },
-    {
-      "id": "CB2gI7J",
-      "employeeName": "farhanshaikhs",
-      "employeeContact": "8668808598",
-      "employeeEmail": "shaikhfarhan5492@gmail.com",
-      "employeeStatus": "aa",
       "shouldShowDiv": false,
       "shouldEditDiv": false
     }
