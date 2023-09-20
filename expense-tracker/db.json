@@ -2,14 +2,30 @@
   "posts": [
     {
       "id": 1,
-      "name": "farhan",
-      "amount": "600"
+      "name": "Garva biryani",
+      "amount": "500",
+      "category": "Food"
     },
     {
-      "name": "farhan 2",
-      "amount": "400",
+      "name": "Petrol",
+      "amount": "260",
+      "category": "Travel",
       "id": 2
+    },
+    {
+      "name": "Chai",
+      "amount": "50",
+      "category": "Food",
+      "id": 3
+    },
+    
+    {
+      "name": "hh",
+      "amount": "77",
+      "category": "Food",
+      "id": 5
     }
+
   ],
   "comments": [
     {
