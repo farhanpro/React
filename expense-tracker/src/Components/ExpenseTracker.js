@@ -6,7 +6,7 @@ export class ExpenseTracker extends Component {
     newExpense: {
       id: 0,
       name: '',
-      amount: 0,
+      amount: Number,
       category: '',
       shouldEditDiv: false
     },
@@ -31,6 +31,7 @@ export class ExpenseTracker extends Component {
         category: '',
         amount: 0,
       },
+      shouldEditDiv: false
     }));
 
     // Update the total in the state
@@ -48,6 +49,7 @@ export class ExpenseTracker extends Component {
   };
 
   fetchData = ()=>{
+
     fetch('http://localhost:3002/posts')
     .then((res) => res.json())
     .then((data) => {this.setState({ expenses: data })
@@ -70,23 +72,60 @@ export class ExpenseTracker extends Component {
                 name: '',
                 amount: 0,
                 category: '',
+               
             },
         });
     })
     .catch((error)=> console.log('Error adding post',error));
   }
 
-  updateEmployee(id) {
-    
+  updateEmployee = (id)=>{
+
     fetch(`http://localhost:3002/posts/${id}`)
       .then((response) => response.json())
       .then((data) => {
         // Handle the data for the single employee here
-      this.setState({ newExpense: data });
+      this.setState({ newExpense : data});
         console.log(data);
+        
 
       })
       .catch((error) => console.error('Error fetching employee:', error));
+  }
+  editEmployee = (data) => {
+    fetch(`http://localhost:3002/posts/${data.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Item updated successfully:', data);
+        this.setState({
+          newExpense: {
+            name: '',
+            category: '',
+            amount: '',
+          },
+          shouldEditDiv: false
+        });
+      
+        this.fetchData();
+        // You can add code here to handle the response as needed
+      })
+      .catch((error) => console.error('Error updating item:', error));
+  };
+
+  deleteItem = (id) => {
+    fetch(`http://localhost:3002/posts/${id}`, {
+      method: 'DELETE',
+    })
+      .then(() => {
+        this.fetchData();
+      })
+      .catch((error) => console.error('Error deleting item:', error));
   };
 
   render() {
@@ -121,7 +160,7 @@ export class ExpenseTracker extends Component {
           <hr></hr>
           <label>Amount </label>
           <input
-            type="text"
+            type="number"
             name="amount"
             placeholder="Amount"
             value={newExpense.amount}
@@ -147,8 +186,8 @@ export class ExpenseTracker extends Component {
                 <td>{expense.category}</td>
                 <td>{expense.amount}</td>
                 <td> 
-                  <button style={{margin:3}} class="btn btn-secondary" type="button" onClick={()=>{this.setState({shouldEditDiv:true});this.updateEmployee(expense.id)}}>Edit</button>
-                  <button style={{margin:3}} class="btn btn-danger" type="button" >Delete</button>
+                  <button style={{margin:3}} class="btn btn-secondary" type="button" onClick={()=>{this.updateEmployee(expense.id);this.setState({shouldEditDiv : true})}}>Edit</button>
+                  <button style={{margin:3}} class="btn btn-danger" type="button" onClick={()=>{this.deleteItem(expense.id)}}>Delete</button>
                 </td>
               </tr>
             ))}
@@ -161,7 +200,7 @@ export class ExpenseTracker extends Component {
               
               <td>
                 <label>Category </label>
-                <select name = "category" onChange={this.handleChange} >
+                <select name = "category" value={newExpense.category} onChange={this.handleChange} >
                 <option >Select</option>
                 {/* s food, education, entertainment, bills, and travel */}
                   <option name = "category" value="Food" >Food</option>
@@ -181,6 +220,11 @@ export class ExpenseTracker extends Component {
                       value={newExpense.amount}
                       onChange={this.handleChange}
                     />
+              </td>
+              <td>
+            
+              <button style={{margin:3}} class="btn btn-secondary" type="button" onClick={()=>{this.editEmployee(newExpense)}}>Edit</button>
+                <button style={{margin:3}} class="btn btn-danger" type="button" >Cancle</button>
               </td>
                
               </tr>
