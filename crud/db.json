@@ -2,11 +2,27 @@
   "posts": [
     {
       "id": 1,
-      "employeeName": "Hapij",
+      "employeeName": "Farhan",
       "employeeContact": "894828992",
-      "employeeEmail": "hapij@sonora.com",
+      "employeeEmail": "farhan@sonorasoftware.com",
+      "employeeStatus": "In-active",
+      "shouldShowDiv": false,
+      "shouldEditDiv": false
+    },
+    {
+      "employeeName": "Pravin",
+      "employeeContact": "1234554321",
+      "employeeEmail": "pravin@sonorasoftware.com",
       "employeeStatus": "Active",
       "shouldShowDiv": false,
+      "id": 2
+    },
+    {
+      "id": 3,
+      "employeeName": "qwerty",
+      "employeeContact": "check",
+      "employeeEmail": "shaikh@gmail.com",
+      "employeeStatus": "Active",
       "shouldEditDiv": false
     }
   ]
