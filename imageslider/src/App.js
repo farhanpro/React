@@ -3,7 +3,7 @@ import ImageSlider from './ImageSlider';
 import { SliderData } from './SliderData';
 
 function App() {
-  return <ImageSlider slides={SliderData} />;
+  return <ImageSlider  />;
 }
 
 export default App;
