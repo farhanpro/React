@@ -1,20 +1,27 @@
 import React, { Component } from 'react';
+import "../App.css";
 
 export class ExpenseTracker extends Component {
   state = {
     expenses: [],
+    shouldEditDiv: false,
+    category:'',
+    total: 0,
     newExpense: {
       id: 0,
       name: '',
       amount: Number,
       category: '',
-      shouldEditDiv: false
     },
   };
   
+  handleCategoryEdit(e)
+  {
+    e.target.value === "None"?this.fetchData():this.fetchByCategory(e.target.value)
+  }
   componentDidMount(){
     this.fetchData();
-  }
+  };
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -31,7 +38,7 @@ export class ExpenseTracker extends Component {
         category: '',
         amount: 0,
       },
-      shouldEditDiv: false
+      shouldEditDiv: false,
     }));
 
     // Update the total in the state
@@ -49,13 +56,15 @@ export class ExpenseTracker extends Component {
   };
 
   fetchData = ()=>{
-
     fetch('http://localhost:3002/posts')
-    .then((res) => res.json())
-    .then((data) => {this.setState({ expenses: data })
-    })
-    .catch((err) => console.log('Error fetching data: ' + err))
-  }
+  .then((res) => res.json())
+  .then((data) => {
+    const newTotal = data.reduce((acc, expense) => acc + parseFloat(expense.amount), 0);
+    this.setState({ expenses: data, total: newTotal });
+  })
+  .catch((err) => console.log('Error fetching data: ' + err));
+
+  };
   
   addExpense = () =>{
     fetch('http://localhost:3002/posts', {
@@ -77,7 +86,7 @@ export class ExpenseTracker extends Component {
         });
     })
     .catch((error)=> console.log('Error adding post',error));
-  }
+  };
 
   updateEmployee = (id)=>{
 
@@ -91,7 +100,8 @@ export class ExpenseTracker extends Component {
 
       })
       .catch((error) => console.error('Error fetching employee:', error));
-  }
+  };
+
   editEmployee = (data) => {
     fetch(`http://localhost:3002/posts/${data.id}`, {
       method: 'PUT',
@@ -128,14 +138,26 @@ export class ExpenseTracker extends Component {
       .catch((error) => console.error('Error deleting item:', error));
   };
 
+  fetchByCategory = (category) =>{
+  fetch(`http://localhost:3002/posts?category=${category}`)
+  .then((res) => res.json())
+  .then((data) => {
+    const newTotal = data.reduce((acc, expense) => acc + parseFloat(expense.amount), 0);
+    this.setState({ expenses: data, total: newTotal });
+  })
+  .catch((err) => console.log('Error fetching data: ' + err));
+  } 
+
   render() {
     const { expenses, newExpense, total } = this.state;
 
     return (
-      <div>
-        <h1>Expense Tracker</h1>
-        <form onSubmit={this.handleSubmit}>
-          <label>Name </label>
+      <div style={{margin:"2%"}}>
+        <h1 class="heading">Expense Tracker</h1>
+        <form  class="flex-container" onSubmit={this.handleSubmit}>
+
+          <div>
+          <label> Name : </label>
           <input
             type="text"
             name="name"
@@ -143,10 +165,10 @@ export class ExpenseTracker extends Component {
             value={newExpense.name}
             onChange={this.handleChange}
           />
-          <br></br>
-          <hr></hr>
-          <label>Category </label>
-           
+          </div>
+
+          <div>
+          <label> Category : </label> 
           <select name = "category" onChange={this.handleChange} >
           <option >Select</option>
           {/* s food, education, entertainment, bills, and travel */}
@@ -156,9 +178,10 @@ export class ExpenseTracker extends Component {
             <option name = "category" value="Bills" >Bills</option>
             <option name = "category" value="Travel" >Travel</option>
           </select>
-          <br></br>
-          <hr></hr>
-          <label>Amount </label>
+          </div>
+
+          <div>
+          <label> Amount : </label>
           <input
             type="number"
             name="amount"
@@ -166,73 +189,143 @@ export class ExpenseTracker extends Component {
             value={newExpense.amount}
             onChange={this.handleChange}
           />
+          </div>
           
-          <br />
-          <hr></hr>
-          <button class="btn btn-primary" type="submit" onClick={()=>{this.addExpense()}}>Submit</button>
+          <button class="btn btn-primary" type="submit" onClick={()=>{this.addExpense()}}>Save</button>
         </form>
         
         <br />
-        <table class="table">
-          <thead>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Amount</th>
-          </thead>
-          <tbody>
-            {expenses.map((expense) => (
-              <tr key={expense.id}>
-                <td>{expense.name}</td>
-                <td>{expense.category}</td>
-                <td>{expense.amount}</td>
-                <td> 
-                  <button style={{margin:3}} class="btn btn-secondary" type="button" onClick={()=>{this.updateEmployee(expense.id);this.setState({shouldEditDiv : true})}}>Edit</button>
-                  <button style={{margin:3}} class="btn btn-danger" type="button" onClick={()=>{this.deleteItem(expense.id)}}>Delete</button>
-                </td>
-              </tr>
-            ))}
-             {newExpense.shouldEditDiv && 
-              <tr>
-                <td> 
-                  <label>Name </label>
-                  <input type="text" name="name" placeholder="Name" value={newExpense.name} onChange={this.handleChange}/>
-                </td>
-              
-              <td>
-                <label>Category </label>
-                <select name = "category" value={newExpense.category} onChange={this.handleChange} >
-                <option >Select</option>
-                {/* s food, education, entertainment, bills, and travel */}
-                  <option name = "category" value="Food" >Food</option>
-                  <option name = "category" value="Education" >Education</option>
-                  <option name = "category" value="Entertainment" >Entertainment</option>
-                  <option name = "category" value="Bills" >Bills</option>
-                  <option name = "category" value="Travel" >Travel</option>
-                </select>
-              </td>
-              
-              <td>
-                <label>Amount </label>
-                    <input
-                      type="text"
-                      name="amount"
-                      placeholder="Amount"
-                      value={newExpense.amount}
-                      onChange={this.handleChange}
-                    />
-              </td>
-              <td>
-            
-              <button style={{margin:3}} class="btn btn-secondary" type="button" onClick={()=>{this.editEmployee(newExpense)}}>Edit</button>
-                <button style={{margin:3}} class="btn btn-danger" type="button" >Cancle</button>
-              </td>
-               
-              </tr>
-            }
 
-          </tbody>
-        </table>
-        <h4>Total: {total}</h4> {/* Display the total expense */}
+      
+        
+        {/* <select name = "category" onChange={(e)=>{this.fetchByCategory(e.target.value)}} > */}
+        <label> Apply Filter  </label> 
+        <select name = "category" onChange={(e)=>{this.handleCategoryEdit(e)}} >
+            <option   name = "category" value = "None">None</option>
+            <option name = "category" value="Food" >Food</option>
+            <option name = "category" value="Education" >Education</option>
+            <option name = "category" value="Entertainment" >Entertainment</option>
+            <option name = "category" value="Bills" >Bills</option>
+            <option name = "category" value="Travel" >Travel</option>
+          </select>
+
+          <table className="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Amount</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {expenses.map((expense) => (
+      <tr key={expense.id}>
+        <td>{expense.name}</td>
+        <td>{expense.category}</td>
+        <td>{expense.amount}</td>
+        <td>
+          <button
+            style={{ margin: 3 }}
+            className="btn btn-secondary"
+            type="button"
+            onClick={() => {
+              this.updateEmployee(expense.id);
+              this.setState({ shouldEditDiv: true });
+            }}
+          >
+            Edit
+          </button>
+          <button
+            style={{ margin: 3 }}
+            className="btn btn-danger"
+            type="button"
+            onClick={() => {
+              this.deleteItem(expense.id);
+            }}
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    ))}
+
+    {this.state.shouldEditDiv && (
+      <tr>
+        <td>
+          <label>Name </label>
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            value={newExpense.name}
+            onChange={this.handleChange}
+          />
+        </td>
+
+        <td>
+          <label>Category </label>
+          <select
+            name="category"
+            value={newExpense.category}
+            onChange={this.handleChange}
+          >
+            <option value="Food">Food</option>
+            <option value="Education">Education</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Bills">Bills</option>
+            <option value="Travel">Travel</option>
+          </select>
+        </td>
+
+        <td>
+          <label>Amount </label>
+          <input
+            type="text"
+            name="amount"
+            placeholder="Amount"
+            value={newExpense.amount}
+            onChange={this.handleChange}
+          />
+        </td>
+
+        <td>
+          <button
+            style={{ margin: 3 }}
+            className="btn btn-secondary"
+            type="button"
+            onClick={() => {
+              this.editEmployee(newExpense);
+            }}
+          >
+            Save
+          </button>
+          <button
+            style={{ margin: 3 }}
+            className="btn btn-danger"
+            type="button"
+            onClick={() => {
+              this.setState({ shouldEditDiv: false });
+            }}
+          >
+            Cancel
+          </button>
+        </td>
+      </tr>
+    )}
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colSpan="2"></td>
+      <th style={{ backgroundColor:"#f2f2f2" }}>
+        <h4 style={{ textAlign: "left" }}>Total: {total}</h4>
+      </th>
+      <td></td>
+    </tr>
+  </tfoot>
+</table>
+
+        {/* <h4>Total: {total}</h4> Display the total expense */}
       </div>
     );
   }

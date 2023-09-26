@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 
 class App extends Component {
   state = {
@@ -148,6 +149,26 @@ class App extends Component {
       })
       .catch((error) => console.error("Error deleting item:", error));
   };
+  // this will delete an record
+  deleteItem2 = (id) => {
+    fetch(`http://localhost:3001/posts/${id}`, {
+      method: "GET",
+    })
+      .then((data) => {
+        // Handle the data for the single employee here
+        this.setState({ newPost :{ 
+          employeeName: data.employeeName,
+          employeeContact: data.employeeContact,
+          employeeEmail: data.employeeEmail,
+          employeeStatus: "In-Active",
+          shouldShowDiv: false,
+        } });
+        console.log(data);
+        this.fetchData();
+      })
+    
+      .catch((error) => console.error("Error deleting item:", error));
+  };
 
   render() {
     const { posts, newPost } = this.state;
@@ -159,7 +180,7 @@ class App extends Component {
         </h2>
 
         {/* Add employee backup button */}
-        <button class="btn btn-primary" onClick={this.handleShowBackup}>Add Employee Backup</button>
+        <button class="btn btn-primary addButton" onClick={this.handleShowBackup}>Add Employee</button>
 
 
         {/* button for modal popup */}
@@ -257,8 +278,7 @@ class App extends Component {
         </Modal>
 
         {/* <button class="btn btn-primary" onClick={this.handleClick}>Add</button> */}
-        <hr></hr>
-
+      
 
         {/* Main body section for displaying data */}
         <table class="table">
@@ -297,6 +317,9 @@ class App extends Component {
                     onClick={() => {
                       this.deleteItem(post.id);
                     }}
+                    // onClick={() => {
+                    //   this.deleteItem(post.id);
+                    // }}
                   >
                     Delete
                   </button>
@@ -361,7 +384,7 @@ class App extends Component {
               </td>
 
               <button
-                style={{ margin: 3 }}
+                style={{ margin: 1 }}
                 class="btn btn-primary"
                 onClick={() => {
                   this.addEmployee();
@@ -369,11 +392,11 @@ class App extends Component {
                 }}
               >
                 {" "}
-                Add
+                Submit
               </button>
               {/* <button class="btn btn-primary" onClick={()=>{this.editEmployee(newPost); this.handleClick();}} > edit</button>  */}
               <button
-                style={{ margin: 3 }}
+                style={{ margin: 1 }}
                 class="btn btn-danger"
                 onClick={() => {
                   this.handleClick();

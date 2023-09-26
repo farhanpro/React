@@ -7,7 +7,7 @@
 }
 
 .image {
-  width: 1000px;
+  width: 100%;
   height: 600px;
   border-radius: 10px;
 }
@@ -15,9 +15,9 @@
 .right-arrow {
   position: absolute;
   top: 50%;
-  right: 32px;
+  right: 72px;
   font-size: 3rem;
-  color: #000;
+  color:red;
   z-index: 10;
   cursor: pointer;
   user-select: none;
@@ -28,7 +28,7 @@
   top: 50%;
   left: 32px;
   font-size: 3rem;
-  color: #000;
+  color: red;
   z-index: 10;
   cursor: pointer;
   user-select: none;
@@ -43,4 +43,34 @@
   opacity: 1;
   transition-duration: 1s;
   transform: scale(1.08);
+}
+
+.option-circles {
+  position: absolute;
+  bottom: 10px; /* Adjust vertical position as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2; /* Ensure the option circles are above the image */
+}
+
+.option-circle {
+  width: 10px;
+  height: 10px;
+  background-color: #ccc;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; 
+}
+
+
+.option-circle.active {
+  background-color: #007bff;
+}
+
+
+.options-wrapper {
+  text-align: center;
+  margin-top: 10px; 
 }
