@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import "../App.css";
 
-export class ExpenseTracker extends Component {
+export class ExpenseTracker extends Component { 
   state = {
     expenses: [],
     shouldEditDiv: false,
